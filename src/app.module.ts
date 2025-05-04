@@ -9,7 +9,6 @@ const yamlConfigLoader = () => {
   try {
     const configPath = join(process.cwd(), 'config', 'default.yml');
     const fileContents = readFileSync(configPath, 'utf8');
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const config = load(fileContents) as Record<string, any>;
     return config;
   } catch (error) {

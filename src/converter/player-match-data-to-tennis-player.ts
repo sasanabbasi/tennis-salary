@@ -18,23 +18,28 @@ export class PlayerMatchDataToTennisPlayerConverter
     matchData: Array<PlayerMatchData>,
     mainPlayerId: number,
   ): TennisPlayer {
-    const player = new TennisPlayer(
-      matchData[0].playerId === mainPlayerId
-        ? {
-            playerId: matchData[0].playerId,
-            playerName: matchData[0].playerName,
-          }
-        : {
-            playerId: matchData[0].opponentId,
-            playerName: matchData[0].opponentName,
-          },
-    );
+    const player = this.getTennisPlayer(matchData[0], mainPlayerId);
 
     player.setTennisMatches(
       matchData.map((match) => this.mapTennisMatch(match, mainPlayerId)),
     );
 
     return player;
+  }
+
+  private getTennisPlayer(
+    match: PlayerMatchData,
+    mainPlayerId: number,
+  ): TennisPlayer {
+    return match.playerId === mainPlayerId
+      ? new TennisPlayer({
+          playerId: match.playerId,
+          playerName: match.playerName,
+        })
+      : new TennisPlayer({
+          playerId: match.opponentId,
+          playerName: match.opponentName,
+        });
   }
 
   private mapTennisMatch(
