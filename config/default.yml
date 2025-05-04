@@ -1,0 +1,11 @@
+bonus:
+  participate_in_match: 500
+  won_sets: 750
+  won_match: 2500
+  won_game: 200
+  ace: 100
+penalty:
+  double_faults: -100
+  racket_damage: -500
+server:
+  port: 8000
