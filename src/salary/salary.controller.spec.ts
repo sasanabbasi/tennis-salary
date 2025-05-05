@@ -8,7 +8,6 @@ describe('SalaryController', () => {
   let controller: SalaryController;
   let salaryService: SalaryService;
 
-  // Mock response data
   const mockSalaryResponse: PlayerSalaryResponse = {
     id: 1,
     name: 'Rafael Nadal',
@@ -25,12 +24,10 @@ describe('SalaryController', () => {
             getSalaryByPlayerId: jest
               .fn()
               .mockImplementation((playerId: number) => {
-                // Return mock data for specific player ID
                 if (playerId === 1) {
                   return mockSalaryResponse;
                 }
 
-                // Simulate error for non-existent player
                 throw new Error(
                   `Player data not found for playerId: ${playerId}`,
                 );
@@ -43,7 +40,6 @@ describe('SalaryController', () => {
     controller = module.get<SalaryController>(SalaryController);
     salaryService = module.get<SalaryService>(SalaryService);
 
-    // Mock logger to avoid console output during tests
     jest.spyOn(Logger.prototype, 'log').mockImplementation(() => undefined);
   });
 
@@ -57,14 +53,11 @@ describe('SalaryController', () => {
 
   describe('getSalaryByPlayerId', () => {
     it('should return player salary data for a valid player ID', () => {
-      // Arrange
       const playerId = 1;
       const spy = jest.spyOn(salaryService, 'getSalaryByPlayerId');
 
-      // Act
       const result = controller.getSalaryByPlayerId(playerId);
 
-      // Assert
       expect(spy).toHaveBeenCalledWith(playerId);
       expect(result).toEqual(mockSalaryResponse);
       expect(result.id).toBe(1);
@@ -73,23 +66,18 @@ describe('SalaryController', () => {
     });
 
     it('should convert string player ID to number', () => {
-      // Arrange
-      const playerIdAsString = '1'; // Simulating string ID from URL parameter
+      const playerIdAsString = '1';
       const spy = jest.spyOn(salaryService, 'getSalaryByPlayerId');
 
-      // Act
       const result = controller.getSalaryByPlayerId(+playerIdAsString);
 
-      // Assert
-      expect(spy).toHaveBeenCalledWith(1); // Should be converted to number
+      expect(spy).toHaveBeenCalledWith(1);
       expect(result).toEqual(mockSalaryResponse);
     });
 
     it('should throw an error for non-existent player ID', () => {
-      // Arrange
       const nonExistentPlayerId = 999;
 
-      // Act & Assert
       expect(() => {
         controller.getSalaryByPlayerId(nonExistentPlayerId);
       }).toThrow(`Player data not found for playerId: ${nonExistentPlayerId}`);
