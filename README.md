@@ -100,7 +100,3 @@ penalty:
 server:
   port: 8000
 ```
-
-## License
-
-[MIT License](LICENSE)

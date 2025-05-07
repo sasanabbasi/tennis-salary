@@ -42,13 +42,24 @@ export class PlayerMatchDataToTennisPlayerConverter
         });
   }
 
+  private getOpponentPlayer(
+    match: PlayerMatchData,
+    mainPlayerId: number,
+  ): { opponentId: number; opponentName: string } {
+    return match.playerId === mainPlayerId
+      ? { opponentId: match.opponentId, opponentName: match.opponentName }
+      : { opponentId: match.playerId, opponentName: match.playerName };
+  }
+
   private mapTennisMatch(
     match: PlayerMatchData,
     mainPlayerId: number,
   ): TennisMatchRecord {
+    const opponentPlayer = this.getOpponentPlayer(match, mainPlayerId);
+
     return new TennisMatchRecord(this.configService, {
-      opponentId: match.opponentId,
-      opponentName: match.opponentName,
+      opponentId: opponentPlayer.opponentId,
+      opponentName: opponentPlayer.opponentName,
       playerPosition: match.playerId === mainPlayerId ? 0 : 1,
       aces: this.convertToTuple(match.aces),
       doubleFaults: this.convertToTuple(match.doubleFaults),
